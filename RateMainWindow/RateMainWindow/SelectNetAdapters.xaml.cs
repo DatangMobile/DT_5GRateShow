@@ -32,7 +32,7 @@ namespace RateMainWindow
             }
 
             this.AdapterList.ItemsSource = adapters;
-            this.GetRateStatus.IsChecked = true;
+            //this.GetRateStatus.IsChecked = true;
         }
 
         /// <summary>

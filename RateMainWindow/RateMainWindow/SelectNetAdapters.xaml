@@ -13,7 +13,9 @@
                 <ComboBox x:Name="AdapterList" SelectionChanged="UserSelectedAdapter" HorizontalAlignment="Center" Width="300"></ComboBox>
                 <Button Click="SetAdapter" Width="50" Margin="0,20,0,5">确定</Button>
             </StackPanel>
-            <CheckBox x:Name="GetRateStatus"></CheckBox>
+            <!--
+            <CheckBox x:Name="GetRateStatus">是否持续监控</CheckBox>
+            -->
         </StackPanel>
 
     </Grid>

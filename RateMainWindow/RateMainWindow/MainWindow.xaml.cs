@@ -72,6 +72,11 @@ namespace RateMainWindow
             this.Loaded += MainWindow_Loaded;
             GetRate = false;
             m_TransmitData = new RateViewModel();
+            
+            this.Rate_Address.Address = System.Environment.CurrentDirectory + @"\Pages\5GRateShow_UniqueDashboard\index.html";
+            CefSharp.CefSharpSettings.LegacyJavascriptBindingEnabled = true;
+            this.Rate_Address.RegisterJsObject("JsObj", m_TransmitData);             // 向前端页面注册一个JsObj，前端可以通过这个进行交互;
+            this.Rate_Address.BeginInit();
         }
 
         /// <summary>
@@ -84,15 +89,12 @@ namespace RateMainWindow
             SelectNetAdapters selectNetAdaptersWindow = new SelectNetAdapters();
             selectNetAdaptersWindow.Show();
             
-            this.Rate_Address.Address = System.Environment.CurrentDirectory + @"\ViewPage\pages\AboutLeafLet.html";
-            CefSharp.CefSharpSettings.LegacyJavascriptBindingEnabled = true;
-            
-            this.Rate_Address.BeginInit();
+
             
             // 启动监控线程;
             Task tsk = new Task(() =>
             {
-                while (GetRate)
+                while (true)
                 {
                     GetNetWorkRate();
                     Thread.Sleep(1000);
@@ -103,12 +105,29 @@ namespace RateMainWindow
 
         private void GetNetWorkRate()
         {
+            if(!GetRate)
+            {
+                return;
+            }
             string dl_rate = String.Format("DownloadSpeedKbps {0:n} kbps", adapter.DownloadSpeedKbps);
             string ul_rate = String.Format("UploadSpeedKbps {0:n} kbps", adapter.UploadSpeedKbps);
+
+            m_TransmitData.SetRate((adapter.UploadSpeedKbps / 1000 * 10).ToString(), 
+                                   (adapter.DownloadSpeedKbps / 1000 * 10).ToString());
             
-            this.Rate_Address.RegisterJsObject("JsObj", m_TransmitData);             // 向前端页面注册一个JsObj，前端可以通过这个进行交互;
 
             Console.WriteLine(dl_rate + ul_rate);
+        }
+
+        private void clickdebug(object sender, RoutedEventArgs e)
+        {
+            this.Rate_Address.ShowDevTools();
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            this.Rate_Address.Height = e.NewSize.Height;
+            this.Rate_Address.Width = e.NewSize.Width;
         }
     }
 }
