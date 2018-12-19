@@ -109,7 +109,7 @@ namespace RateMainWindow
             {
                 return;
             }
-            string dl_rate = String.Format("DownloadSpeedKbps {0:n} kbps", adapter.DownloadSpeedKbps);
+            string dl_rate = String.Format("DownloadSpeedKbps {0:n} kbps ", adapter.DownloadSpeedKbps);
             string ul_rate = String.Format("UploadSpeedKbps {0:n} kbps", adapter.UploadSpeedKbps);
 
             m_TransmitData.SetRate((adapter.UploadSpeedKbps / 1000 * 10).ToString(), 

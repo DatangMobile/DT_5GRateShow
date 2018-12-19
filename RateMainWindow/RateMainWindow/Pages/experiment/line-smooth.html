@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+   <head>
+       <meta charset="utf-8">
+   </head>
+   <body style="height: 100%; margin: 0">
+       <div id="container" style="height: 70%"></div>
+       <div id="container2" style="height: 30%"></div>
+
+
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+       <script type="text/javascript">
+       
+
+            var dom2 = document.getElementById("container2");
+            var myChart = echarts.init(dom2);
+            var app2 = {};
+            option2 = null;
+            option2 = {
+                title: {
+                    text: '下行速率统计'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    formatter: function (params) {
+                        params = params[0];
+                        var date = new Date(params.name);
+                        return date.getHours() + ':' + (date.getMinutes()) + ':' + date.getSeconds() + ' : ' + params.value[1];
+                    },
+                    axisPointer: {
+                        animation: false
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    splitLine: {
+                        show: false
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    boundaryGap: [0, '100%'],
+                    splitLine: {
+                        show: false
+                    }
+                },
+                series: [{
+                    name: '下行速率',
+                    type: 'line',
+                    showSymbol: false,
+                    hoverAnimation: false,
+                    data: data
+                }]
+            };
+
+            var dom = document.getElementById("container");
+            var myDash = echarts.init(dom);
+            var app = {};
+            option = null;
+            option = {
+                tooltip : {
+                    formatter: "{a} <br/>{c} {b}"
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        restore: {show: true},
+                        saveAsImage: {show: true}
+                    }
+                },
+                series : [
+                    {
+                        name: '下行速率',
+                        type: 'gauge',
+                        z: 3,
+                        min: 0,
+                        max: 3000,
+                        splitNumber: 10,
+                        radius: '80%',
+                        axisLine: {            // 坐标轴线
+                            lineStyle: {       // 属性lineStyle控制线条样式
+                                width: 10
+                            }
+                        },
+                        axisTick: {            // 坐标轴小标记
+                            length: 15,        // 属性length控制线长
+                            lineStyle: {       // 属性lineStyle控制线条样式
+                                color: 'auto'
+                            }
+                        },
+                        splitLine: {             // 分隔线
+                            length: 20,          // 属性length控制线长
+                            lineStyle: {         // 属性lineStyle（详见lineStyle）控制线条样式
+                                color: 'auto'
+                            }
+                        },
+                        axisLabel: {
+                            backgroundColor: 'auto',
+                            borderRadius: 5,
+                            color: '#eee',
+                            padding: 3,
+                            textShadowBlur: 5,
+                            textShadowOffsetX: 2,
+                            textShadowOffsetY: 2,
+                            textShadowColor: '#222',
+                            fontSize:20
+                        },
+                        title : {
+                            // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                            fontWeight: 'bolder',
+                            fontSize: 20,
+                            fontStyle: 'italic'
+                        },
+                        detail : {
+                            // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                            formatter: function (value) {
+                                value = (value + '').split('.');
+                                value.length < 2 && (value.push('00'));
+                                return ('00' + value[0]).slice(-4)
+                                    + '.' + (value[1] + '00').slice(0, 2) + 'Mbps';
+                            },
+                            fontWeight: 'bolder',
+                            fontSize:45,
+                            borderRadius: 3,
+                            backgroundColor: '#444',
+                            borderColor: '#aaa',
+                            shadowBlur: 3,
+                            shadowColor: '#333',
+                            shadowOffsetX: 0,
+                            shadowOffsetY: 3,
+                            borderWidth: 2,
+                            textBorderColor: '#000',
+                            textBorderWidth: 2,
+                            textShadowBlur: 2,
+                            textShadowColor: '#fff',
+                            textShadowOffsetX: 0,
+                            textShadowOffsetY: 0,
+                            fontFamily: 'Arial',
+                            width: 290,
+                            color: '#eee',
+                            rich: {}
+                        },
+                        data:[{value: 1200, name: 'DL:Mbps'}]
+                    }
+                    
+                ]
+            };
+
+
+            function SetRateDataToChart(rateval) {
+                now = new Date();
+                var a = now.toString();
+
+                return {
+                    name: now.toString(),
+                    value: [
+                        [now.getHours(), now.getMinutes(), now.getSeconds()].join(':'),
+                        rateval
+                    ]
+                }
+            }
+
+            var data = [];
+            let now = new Date();
+            var oneDay = 24 * 3600 * 1000;
+            var value = Math.random() * 1000;
+
+            for (var i = 0; i < 1000; i++) {
+                data.push(SetRateDataToChart());
+            }
+
+            setInterval(function (){
+                var val = Math.floor(Math.random() * (1000 - 900)) + 900;
+                option.series[0].data[0].value = val;
+
+                for (var i = 0; i < 5; i++) {
+                    data.shift();
+                    data.push(SetRateDataToChart(val));
+                }
+
+                var ret = SetRateDataToChart(val);
+
+                myDash.setOption(option,true);
+                myChart.setOption({
+                    series: [{
+                        data: data
+                    }]
+                });
+            },1000);;
+            if (option && typeof option === "object") {
+                myDash.setOption(option, true);
+            }
+            if (option2 && typeof option2 === "object") {
+                myChart.setOption(option2, true);
+            }
+            
+       </script>
+   </body>
+</html>
