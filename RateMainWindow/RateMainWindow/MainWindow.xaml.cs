@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using RateMainWindow.NetWorkMonitor;
 using CefSharp;
+using System.IO;
 
 namespace RateMainWindow
 {
@@ -68,6 +69,10 @@ namespace RateMainWindow
 
         private RateViewModel m_TransmitData;
 
+        // 如果文件不存在则创建文件如果存在则覆盖文件;
+        FileStream fs;
+        StreamWriter sw;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -79,7 +84,17 @@ namespace RateMainWindow
             CefSharp.CefSharpSettings.LegacyJavascriptBindingEnabled = true;
             this.Rate_Address.RegisterJsObject("JsObj", m_TransmitData);             // 向前端页面注册一个JsObj，前端可以通过这个进行交互;
             this.Rate_Address.BeginInit();
+            fs = new FileStream("log.txt", FileMode.Create, FileAccess.Write);
+            sw = new StreamWriter(fs, Encoding.Default);
+            this.Closed += MainWindow_Closed;
         }
+
+        private void MainWindow_Closed(object sender, EventArgs e)
+        {
+            sw.Flush();
+            sw.Close();
+        }
+
 
         /// <summary>
         /// 加载后显示网卡选择页面;
@@ -111,8 +126,8 @@ namespace RateMainWindow
             {
                 return;
             }
-            string dl_rate = String.Format("DownloadSpeedKbps {0:n} kbps ", adapter.DownloadSpeedKbps);
-            string ul_rate = String.Format("UploadSpeedKbps {0:n} kbps", adapter.UploadSpeedKbps);
+            string dl_rate = String.Format("DownloadSpeedKbps {0:n} Mbps ", adapter.DownloadSpeedKbps / 1000);
+            string ul_rate = String.Format("UploadSpeedKbps {0:n} Mbps", adapter.UploadSpeedKbps / 1000);
 
             double dl = (adapter.DownloadSpeedKbps / 1000 * Coef);
             double ul = (adapter.UploadSpeedKbps / 1000 * Coef);
@@ -123,7 +138,17 @@ namespace RateMainWindow
                 dl = 1400f;
 
             m_TransmitData.SetRate(ul.ToString(), dl.ToString());
-            
+
+            try
+            {
+                fs.SetLength(0);
+                sw.WriteLine(dl_rate+ ul_rate);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("write file log.txt failed:" + e.ToString());
+            }
+
 
             Console.WriteLine(dl_rate + ul_rate);
         }

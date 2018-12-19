@@ -4,19 +4,23 @@
        <meta charset="utf-8">
    </head>
    <body style="height: 100%; margin: 0">
-       <div id="container" style="height: 70%; width: 75%; margin-right: 20%"></div>
+        <style>
+            body{background:url(img/bg2.jpg) no-repeat} 
+        </style>
+       <div id="container" style="height: 70%; width: 95%; margin-right: 10%;"></div>
        <div id="container2" style="height: 30%"></div>
 
 
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="echarts/echarts.min.js"></script>
+       <script type="text/javascript" src="echarts/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="echarts/ecStat.min.js"></script>
+       <script type="text/javascript" src="echarts/dataTool.min.js"></script>
+       <script type="text/javascript" src="echarts/china.js"></script>
+       <script type="text/javascript" src="echarts/world.js"></script>
+       <script type="text/javascript" src="echarts/bmap.min.js"></script>
+       <script type="text/javascript" src="echarts/simplex.js"></script>
        <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+
        <script type="text/javascript">
        
             var dom = document.getElementById("container");
@@ -47,7 +51,7 @@
                         endAngle:-75,
                         axisLine: {            // 坐标轴线
                             lineStyle: {       // 属性lineStyle控制线条样式
-                                width: 70
+                                width: 60
                             }
                         },
                         axisTick: {            // 坐标轴小标记
@@ -64,19 +68,27 @@
                         },
                         axisLabel: {
                             borderRadius: 500,
-                            color: '#eee',
+                            color: '#fff',
                             padding: 3,
                             textShadowBlur: 5,
                             textShadowOffsetX: 0,
                             textShadowOffsetY: 0,
-                            textShadowColor: '#222',
+                            textShadowColor: '#fff',
                             fontSize:20
                         },
                         title : {
                             // 其余属性默认使用全局文本样式，详见TEXTSTYLE
                             fontWeight: 'bolder',
                             fontSize: 20,
-                            fontStyle: 'italic'
+                            fontStyle: 'italic',
+                            textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                                fontWeight: 'bolder',
+                                fontSize: 20,
+                                fontStyle: 'italic',
+                                color: '#fff',
+                                shadowColor : '#fff', //默认透明
+                                shadowBlur: 10
+                            }
                         },
                         detail : {
                             // 其余属性默认使用全局文本样式，详见TEXTSTYLE
@@ -86,8 +98,8 @@
                                 return ('00' + value[0]).slice(-4)
                                     + '.' + (value[1] + '00').slice(0, 2) + ' Mbps';
                             },
-                            offsetCenter: [550, '0%'],
-                            fontSize:80,
+                            offsetCenter: [450, '0%'],
+                            fontSize:60,
                             borderRadius: 3,
                             shadowBlur: 3,
                             shadowOffsetX: 0,
@@ -116,7 +128,10 @@
             option2 = null;
             option2 = {
                 title: {
-                    text: '下行速率统计'
+                    text: '下行速率统计',
+                    textStyle:{
+                        color:'#fff'
+                    }
                 },
                 tooltip: {
                     trigger: 'axis',
@@ -133,7 +148,13 @@
                     type: 'category',
                     boundaryGap: true,  // true:x轴两边留白；false:x轴两边无padding
                     splitLine: {
-                        show: false
+                        show: false,
+                        color:'#000'
+                    },
+                    axisLine:{
+                        lineStyle:{
+                            color:'#ffffff'
+                        }
                     }
                 },
                 yAxis: {
@@ -141,6 +162,11 @@
                     boundaryGap: [0, '100%'],
                     splitLine: {
                         show: false
+                    },
+                    axisLine:{
+                        lineStyle:{
+                            color:'#ffffff'
+                        }
                     }
                 },
                 series: [{
@@ -148,6 +174,9 @@
                     type: 'line',
                     showSymbol: false,
                     hoverAnimation: false,
+                    lineStyle:{
+                        color:'#fff'
+                    },
                     data: data
                 }]
             };
