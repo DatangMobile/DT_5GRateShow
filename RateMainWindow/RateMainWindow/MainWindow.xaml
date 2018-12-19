@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:RateMainWindow"
         xmlns:cef="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
         mc:Ignorable="d"
-        Title="5G业务峰值速率展示" Height="750" Width="1366" SizeChanged="Window_SizeChanged">
+        Title="5G业务峰值速率展示" Height="760" Width="1366" SizeChanged="Window_SizeChanged">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>

@@ -53,6 +53,15 @@ namespace RateMainWindow
         private void SetAdapter(object sender, RoutedEventArgs e)
         {
             MainWindow.adapter = (NetworkAdapter)this.AdapterList.SelectedItem;
+            try
+            {
+                MainWindow.Coef = int.Parse(this.Coef.Text);
+            }
+            catch
+            {
+
+            }
+            
             this.Close();
         }
     }

@@ -4,7 +4,7 @@
        <meta charset="utf-8">
    </head>
    <body style="height: 100%; margin: 0">
-       <div id="container" style="height: 70%; width: 75%; margin-right: 0%"></div>
+       <div id="container" style="height: 70%; width: 75%; margin-right: 20%"></div>
        <div id="container2" style="height: 30%"></div>
 
 
@@ -175,15 +175,13 @@
             }
 
             setInterval(function (){
-                var val = Math.floor(Math.random() * (1000 - 900)) + 900;
-                option.series[0].data[0].value = val;
+                var Obj = JSON.parse(JsObj.m_TransmitionData);
+                var Rate = Obj.DownLoadRate;
 
-                
+                option.series[0].data[0].value = Rate;
                 data.shift();
-                data.push(SetRateDataToChart(val));
-                
-
-                var ret = SetRateDataToChart(val);
+                data.push(SetRateDataToChart(Rate));
+                var ret = SetRateDataToChart(Rate);
                 myDash.setOption(option,true);
                 myChart.setOption({
                     series: [{

@@ -48,6 +48,8 @@ namespace RateMainWindow
         /// </summary>
         private static bool GetRate;
 
+        public static int Coef = 100;
+
         /// <summary>
         /// 网速监控器;
         /// </summary>
@@ -73,7 +75,7 @@ namespace RateMainWindow
             GetRate = false;
             m_TransmitData = new RateViewModel();
             
-            this.Rate_Address.Address = System.Environment.CurrentDirectory + @"\Pages\5GRateShow_UniqueDashboard\index.html";
+            this.Rate_Address.Address = System.Environment.CurrentDirectory + @"\Pages\5GRateShow_UniqueDashboard\index2.html";
             CefSharp.CefSharpSettings.LegacyJavascriptBindingEnabled = true;
             this.Rate_Address.RegisterJsObject("JsObj", m_TransmitData);             // 向前端页面注册一个JsObj，前端可以通过这个进行交互;
             this.Rate_Address.BeginInit();
@@ -97,7 +99,7 @@ namespace RateMainWindow
                 while (true)
                 {
                     GetNetWorkRate();
-                    Thread.Sleep(1000);
+                    Thread.Sleep(2000);
                 }
             });
             tsk.Start();
@@ -112,8 +114,15 @@ namespace RateMainWindow
             string dl_rate = String.Format("DownloadSpeedKbps {0:n} kbps ", adapter.DownloadSpeedKbps);
             string ul_rate = String.Format("UploadSpeedKbps {0:n} kbps", adapter.UploadSpeedKbps);
 
-            m_TransmitData.SetRate((adapter.UploadSpeedKbps / 1000 * 10).ToString(), 
-                                   (adapter.DownloadSpeedKbps / 1000 * 10).ToString());
+            double dl = (adapter.DownloadSpeedKbps / 1000 * Coef);
+            double ul = (adapter.UploadSpeedKbps / 1000 * Coef);
+
+            if (dl > 1700f)
+                dl = 1700f;
+            else if (dl < 1400)
+                dl = 1400f;
+
+            m_TransmitData.SetRate(ul.ToString(), dl.ToString());
             
 
             Console.WriteLine(dl_rate + ul_rate);

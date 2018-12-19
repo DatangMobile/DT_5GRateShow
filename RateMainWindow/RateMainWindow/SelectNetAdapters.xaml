@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RateMainWindow"
         mc:Ignorable="d" VerticalAlignment="Center"
-        Title="SelectNetAdapters" Height="150" Width="350" WindowStyle="None">
+        Title="SelectNetAdapters" Height="170" Width="350" WindowStyle="None">
     <Grid>
         <StackPanel  HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel>
@@ -16,6 +16,7 @@
             <!--
             <CheckBox x:Name="GetRateStatus">是否持续监控</CheckBox>
             -->
+            <TextBox x:Name="Coef" Width="40"></TextBox>
         </StackPanel>
 
     </Grid>
