@@ -55,7 +55,8 @@ namespace RateMainWindow
             MainWindow.adapter = (NetworkAdapter)this.AdapterList.SelectedItem;
             try
             {
-                MainWindow.Coef = int.Parse(this.Coef.Text);
+                //MainWindow.Coef = int.Parse(this.Coef.Text);
+                //MainWindow.CoefSave = int.Parse(this.Coef.Text);
             }
             catch
             {

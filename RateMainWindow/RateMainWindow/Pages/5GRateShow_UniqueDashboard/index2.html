@@ -7,8 +7,8 @@
         <style>
             body{background:url(img/bg2.jpg) no-repeat} 
         </style>
-       <div id="container" style="height: 70%; width: 95%; margin-right: 10%;"></div>
-       <div id="container2" style="height: 30%"></div>
+       <div id="container" style="height: 70%; width: 100%; margin-left: -15%"></div>
+       <div id="container2" style="height: 30%; margin-left: 3%"></div>
 
 
        <script type="text/javascript" src="echarts/echarts.min.js"></script>
@@ -44,32 +44,37 @@
                         type: 'gauge',
                         z: 3,
                         min: 0,
-                        max: 3000,
-                        splitNumber: 10,
+                        max: 2400,
+                        splitNumber: 12,
                         radius: '65%',
-                        startAngle:180,
-                        endAngle:-75,
-                        axisLine: {            // 坐标轴线
-                            lineStyle: {       // 属性lineStyle控制线条样式
-                                width: 60
+                        startAngle:310,
+                        endAngle:0,
+                        itemStyle:{
+                            opacity : 0.6
+                        },
+                        axisLine: {              // 坐标轴线
+                            lineStyle: {         // 属性lineStyle控制线条样式
+                                color: [[0.0, '#f2f2f2'], [0.0, '#f2f2f2'], [1, '#f2f2f2']],
+                                width: 60,
+                                opacity : 0.6
                             }
                         },
-                        axisTick: {            // 坐标轴小标记
-                            length: 1,        // 属性length控制线长
-                            lineStyle: {       // 属性lineStyle控制线条样式
+                        axisTick: {              // 坐标轴小标记
+                            length: 2,           // 属性length控制线长
+                            lineStyle: {         // 属性lineStyle控制线条样式
                                 color: 'auto'
                             }
                         },
                         splitLine: {             // 分隔线
-                            length: 0,          // 属性length控制线长
+                            length: 5,           // 属性length控制线长
                             lineStyle: {         // 属性lineStyle（详见lineStyle）控制线条样式
                                 color: 'auto'
                             }
                         },
                         axisLabel: {
                             borderRadius: 500,
-                            color: '#fff',
-                            padding: 3,
+                            color: '#000',
+                            padding: 1,
                             textShadowBlur: 5,
                             textShadowOffsetX: 0,
                             textShadowOffsetY: 0,
@@ -99,7 +104,7 @@
                                     + '.' + (value[1] + '00').slice(0, 2) + ' Mbps';
                             },
                             offsetCenter: [450, '0%'],
-                            fontSize:60,
+                            fontSize:80,
                             borderRadius: 3,
                             shadowBlur: 3,
                             shadowOffsetX: 0,
@@ -115,7 +120,7 @@
                             color: '#eee',
                             rich: {}
                         },
-                        data:[{value: 1200, name: 'DL:Mbps'}]
+                        data:[{value: 0, name: 'DL:Mbps'}]
                     }
                     
                 ]
@@ -159,6 +164,7 @@
                 },
                 yAxis: {
                     type: 'value',
+                    max:2400,
                     boundaryGap: [0, '100%'],
                     splitLine: {
                         show: false
@@ -174,6 +180,7 @@
                     type: 'line',
                     showSymbol: false,
                     hoverAnimation: false,
+                    smooth: true,
                     lineStyle:{
                         color:'#fff'
                     },
@@ -199,7 +206,8 @@
             var oneDay = 24 * 3600 * 1000;
             var value = Math.random() * 1000;
 
-            for (var i = 0; i < 1000; i++) {
+            // 设置最多存多少个点
+            for (var i = 0; i < 7200; i++) {
                 data.push(SetRateDataToChart());
             }
 
@@ -217,7 +225,7 @@
                         data: data
                     }]
                 });
-            },2000);;
+            },1000);;
             if (option && typeof option === "object") {
                 myDash.setOption(option, true);
             }

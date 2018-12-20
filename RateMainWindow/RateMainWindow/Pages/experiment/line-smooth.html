@@ -4,8 +4,8 @@
        <meta charset="utf-8">
    </head>
    <body style="height: 100%; margin: 0">
-       <div id="container" style="height: 70%; width: 75%; margin-right: 0%"></div>
-       <div id="container2" style="height: 30%"></div>
+       <div id="container" style="height: 70%; width: 100%; margin-left: -20%;"></div>
+       <div id="container2" style="height: 30%; margin-left: 3%"></div>
 
 
        <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
@@ -28,10 +28,10 @@
                     formatter: "{a} <br/>{c} {b}"
                 },
                 toolbox: {
-                    show: true,
+                    show: false,
                     feature: {
-                        restore: {show: true},
-                        saveAsImage: {show: true}
+                        restore: {show: false},
+                        saveAsImage: {show: false}
                     }
                 },
                 series : [
@@ -40,14 +40,14 @@
                         type: 'gauge',
                         z: 3,
                         min: 0,
-                        max: 3000,
+                        max: 2700,
                         splitNumber: 10,
                         radius: '65%',
-                        startAngle:180,
-                        endAngle:-75,
+                        startAngle: 270,
+                        endAngle: 0,
                         axisLine: {            // 坐标轴线
                             lineStyle: {       // 属性lineStyle控制线条样式
-                                width: 70
+                                width: 50
                             }
                         },
                         axisTick: {            // 坐标轴小标记
@@ -57,19 +57,19 @@
                             }
                         },
                         splitLine: {             // 分隔线
-                            length: 0,          // 属性length控制线长
+                            length: 5,          // 属性length控制线长
                             lineStyle: {         // 属性lineStyle（详见lineStyle）控制线条样式
                                 color: 'auto'
                             }
                         },
                         axisLabel: {
                             borderRadius: 500,
-                            color: '#eee',
-                            padding: 3,
-                            textShadowBlur: 5,
+                            color: '#000',
+                            padding: 1,
+                            textShadowBlur: 1,
                             textShadowOffsetX: 0,
                             textShadowOffsetY: 0,
-                            textShadowColor: '#222',
+                            textShadowColor: '#000',
                             fontSize:20
                         },
                         title : {
@@ -103,7 +103,7 @@
                             color: '#eee',
                             rich: {}
                         },
-                        data:[{value: 1200, name: 'DL:Mbps'}]
+                        data:[{value: 0, name: 'DL:Mbps'}]
                     }
                     
                 ]
@@ -139,6 +139,7 @@
                 yAxis: {
                     type: 'value',
                     boundaryGap: [0, '100%'],
+                    max:2400,
                     splitLine: {
                         show: false
                     }
@@ -148,6 +149,7 @@
                     type: 'line',
                     showSymbol: false,
                     hoverAnimation: false,
+                    smooth: true,
                     data: data
                 }]
             };
@@ -170,12 +172,12 @@
             var oneDay = 24 * 3600 * 1000;
             var value = Math.random() * 1000;
 
-            for (var i = 0; i < 1000; i++) {
+            for (var i = 0; i < 7200; i++) {
                 data.push(SetRateDataToChart());
             }
 
             setInterval(function (){
-                var val = Math.floor(Math.random() * (1000 - 900)) + 900;
+                var val = Math.floor(Math.random() * (1700 - 1400)) + 1400;
                 option.series[0].data[0].value = val;
 
                 
@@ -190,7 +192,7 @@
                         data: data
                     }]
                 });
-            },2000);;
+            },1000);;
             if (option && typeof option === "object") {
                 myDash.setOption(option, true);
             }

@@ -16,7 +16,8 @@
             <!--
             <CheckBox x:Name="GetRateStatus">是否持续监控</CheckBox>
             -->
-            <TextBox x:Name="Coef" Width="60" HorizontalAlignment="Left"></TextBox>
+            <TextBox x:Name="Coef" Width="60" HorizontalAlignment="Left" Visibility="Hidden"></TextBox>
+            
         </StackPanel>
 
     </Grid>

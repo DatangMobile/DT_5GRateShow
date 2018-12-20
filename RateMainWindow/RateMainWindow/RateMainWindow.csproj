@@ -172,6 +172,8 @@
   <Import Project="..\packages\CefSharp.Common.69.0.0\build\CefSharp.Common.targets" Condition="Exists('..\packages\CefSharp.Common.69.0.0\build\CefSharp.Common.targets')" />
   <Import Project="..\packages\CefSharp.Wpf.69.0.0\build\CefSharp.Wpf.targets" Condition="Exists('..\packages\CefSharp.Wpf.69.0.0\build\CefSharp.Wpf.targets')" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /I /E /F /Y $(ProjectDir)Pages\5GRateShow_UniqueDashboard\*.xml "$(TargetDir)Pages\5GRateShow_UniqueDashboard\"</PostBuildEvent>
+    <PostBuildEvent>xcopy /I /E /F /Y $(ProjectDir)Pages\5GRateShow_UniqueDashboard\*.html "$(TargetDir)Pages\5GRateShow_UniqueDashboard\"
+xcopy /I /E /F /Y $(ProjectDir)Pages\5GRateShow_UniqueDashboard\echarts\*.js "$(TargetDir)Pages\5GRateShow_UniqueDashboard\echarts\"
+xcopy /I /E /F /Y $(ProjectDir)Pages\5GRateShow_UniqueDashboard\img\*.jpg "$(TargetDir)Pages\5GRateShow_UniqueDashboard\img\"</PostBuildEvent>
   </PropertyGroup>
 </Project>

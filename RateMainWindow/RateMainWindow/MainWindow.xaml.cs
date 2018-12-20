@@ -40,7 +40,6 @@ namespace RateMainWindow
                 monitor = new NetworkMonitor();
                 monitor.StartMonitoring(m_adapter);
                 GetRate = true;
-                
             }
         }
 
@@ -49,7 +48,9 @@ namespace RateMainWindow
         /// </summary>
         private static bool GetRate;
 
-        public static int Coef = 100;
+        public static int Coef = 1;
+        public static int CoefSave;
+        public static int Cliff;
 
         /// <summary>
         /// 网速监控器;
@@ -71,7 +72,7 @@ namespace RateMainWindow
 
         // 如果文件不存在则创建文件如果存在则覆盖文件;
         FileStream fs;
-        StreamWriter sw;
+        string ConfigNum;
 
         public MainWindow()
         {
@@ -85,14 +86,14 @@ namespace RateMainWindow
             this.Rate_Address.RegisterJsObject("JsObj", m_TransmitData);             // 向前端页面注册一个JsObj，前端可以通过这个进行交互;
             this.Rate_Address.BeginInit();
             fs = new FileStream("log.txt", FileMode.Create, FileAccess.Write);
-            sw = new StreamWriter(fs, Encoding.Default);
             this.Closed += MainWindow_Closed;
+            
         }
 
         private void MainWindow_Closed(object sender, EventArgs e)
         {
-            sw.Flush();
-            sw.Close();
+            //sw.Flush();
+            //sw.Close();
         }
 
 
@@ -114,10 +115,55 @@ namespace RateMainWindow
                 while (true)
                 {
                     GetNetWorkRate();
-                    Thread.Sleep(2000);
+                    Thread.Sleep(1000);
                 }
             });
             tsk.Start();
+            
+            StreamReader sr = new StreamReader(System.Environment.CurrentDirectory + @"\conf.txt", Encoding.Default);
+            while ((ConfigNum = sr.ReadLine()) != null)
+            {
+                Console.WriteLine(ConfigNum.ToString());
+                string PrintString = "";
+                try
+                {
+                    if (ConfigNum.Substring(0, 4) == "优化倍数")
+                    {
+                        Coef = int.Parse(ConfigNum.Substring(4, ConfigNum.Length - 4));
+                        CoefSave = Coef;
+                        PrintString = "写入优化倍数:" + Coef + "\n";
+                    }
+                    else if (ConfigNum.Substring(0, 4) == "爬升系数")
+                    {
+                        Cliff = int.Parse(ConfigNum.Substring(4, ConfigNum.Length - 4));
+                        PrintString = "写入爬升系数:" + Cliff + "\n";
+                    }
+
+
+                    try
+                    {
+                        fs.Close();
+                        fs = File.OpenWrite(System.Environment.CurrentDirectory + @"\log.txt");
+                        fs.Position = fs.Length;
+                        byte[] bytes = Encoding.UTF8.GetBytes(PrintString);
+                        fs.Write(bytes, 0, bytes.Length);
+                    }
+                    catch (Exception e2)
+                    {
+                        Console.WriteLine("write file log.txt failed:" + e2.ToString());
+                    }
+                    finally
+                    {
+                        fs.Close();
+                    }
+
+                }
+                catch
+                {
+
+                }
+
+            }
         }
 
         private void GetNetWorkRate()
@@ -126,32 +172,71 @@ namespace RateMainWindow
             {
                 return;
             }
-            string dl_rate = String.Format("DownloadSpeedKbps {0:n} Mbps ", adapter.DownloadSpeedKbps / 1000);
-            string ul_rate = String.Format("UploadSpeedKbps {0:n} Mbps", adapter.UploadSpeedKbps / 1000);
 
-            double dl = (adapter.DownloadSpeedKbps / 1000 * Coef);
-            double ul = (adapter.UploadSpeedKbps / 1000 * Coef);
+            string now_Time = DateTime.Now.ToString();
+            string dl_rate = String.Format("DownloadSpeedKbps {0:n} Mbps ", adapter.DownloadSpeedKbps / 1024 * 8);
+            string ul_rate = String.Format("UploadSpeedKbps {0:n} Mbps", adapter.UploadSpeedKbps / 1024 * 8);
+            string PrintString = now_Time + " : " + dl_rate + ul_rate + "\n";
 
-            if (dl > 1700f)
-                dl = 1700f;
-            else if (dl < 1400)
-                dl = 1400f;
+            // 对数据进行优化处理;
+            double dl = (adapter.DownloadSpeedKbps / 1024 * Coef * 8);
+            double ul = (adapter.UploadSpeedKbps / 1024 * Coef * 8);
 
+            // 表明有业务正在运行;
+            if(dl > 2f)
+            {
+                if(Coef < CoefSave)
+                {
+                    Coef += Cliff;
+                }
+                if (dl > 1700f)
+                {
+                    dl = 1700f;
+                    dl -= (new Random()).NextDouble();
+                    dl -= (new Random()).Next(1, 5);
+                }
+
+                // 如果低于1.4G速率,可以显示出波段;
+                else if (dl < 1400f)
+                {
+                    dl = 1400f;
+                    dl += (new Random()).NextDouble();
+                    dl += (new Random()).Next(1, 20);
+                }
+            }
+            // 表明没有业务;
+            else if(dl < 2f)
+            {
+                Coef = 1;
+            }
+            
+            
+                
+            // 向前端发送速率数据;
             m_TransmitData.SetRate(ul.ToString(), dl.ToString());
 
+
+            // 写入log文件;
             try
             {
-                fs.SetLength(0);
-                sw.WriteLine(dl_rate+ ul_rate);
+                fs = File.OpenWrite(System.Environment.CurrentDirectory + @"\log.txt");
+                fs.Position = fs.Length;
+                byte[] bytes = Encoding.UTF8.GetBytes(PrintString);
+                fs.Write(bytes, 0, bytes.Length);
             }
             catch (Exception e)
             {
                 Console.WriteLine("write file log.txt failed:" + e.ToString());
             }
+            finally
+            {
+                fs.Close();
+            }
 
 
-            Console.WriteLine(dl_rate + ul_rate);
+            Console.WriteLine(PrintString);
         }
+
 
         private void clickdebug(object sender, RoutedEventArgs e)
         {
