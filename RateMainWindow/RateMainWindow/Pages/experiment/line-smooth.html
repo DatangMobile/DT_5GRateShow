@@ -3,8 +3,26 @@
    <head>
        <meta charset="utf-8">
    </head>
-   <body style="height: 100%; margin: 0">
-       <div id="container" style="height: 70%; width: 100%; margin-left: -20%;"></div>
+   <body style="height: 100%; margin: 0;" id='web_bg'>
+       <style>
+           #web_bg{
+                position:fixed;
+                top: 0;
+                left: 0;
+                width:100%;
+                height:100%;
+                min-width: 1000px;
+                z-index:-10;
+                zoom: 1;
+                background-repeat: no-repeat;
+                background-size: cover;
+                -webkit-background-size: cover;
+                -o-background-size: cover;
+                background-position: center 0;
+                background: url('img/bg3.jpg')
+            }
+       </style>
+       <div id="container" style="height: 70%; width: 120%; margin-left: -25%;"></div>
        <div id="container2" style="height: 30%; margin-left: 3%"></div>
 
 
@@ -40,19 +58,26 @@
                         type: 'gauge',
                         z: 3,
                         min: 0,
-                        max: 2700,
+                        max: 2200,
                         splitNumber: 10,
                         radius: '65%',
                         startAngle: 270,
                         endAngle: 0,
+                        itemStyle:{
+                            opacity : 0.6,
+                            color:'#ff0000'
+                        },
                         axisLine: {            // 坐标轴线
                             lineStyle: {       // 属性lineStyle控制线条样式
-                                width: 50
+                                width: 60,
+                                color: [[0.0, '#ffffff'], [0.0, '#ffffff'], [1, '#ffffff']],
+                                opacity : 0.3,
+                                shadowColor:'#ff00ff'
                             }
                         },
-                        axisTick: {            // 坐标轴小标记
-                            length: 1,        // 属性length控制线长
-                            lineStyle: {       // 属性lineStyle控制线条样式
+                        axisTick: {              // 坐标轴小标记
+                            length: 2,           // 属性length控制线长
+                            lineStyle: {         // 属性lineStyle控制线条样式
                                 color: 'auto'
                             }
                         },
@@ -64,7 +89,7 @@
                         },
                         axisLabel: {
                             borderRadius: 500,
-                            color: '#000',
+                            color: '#fff',
                             padding: 1,
                             textShadowBlur: 1,
                             textShadowOffsetX: 0,
@@ -76,7 +101,13 @@
                             // 其余属性默认使用全局文本样式，详见TEXTSTYLE
                             fontWeight: 'bolder',
                             fontSize: 20,
-                            fontStyle: 'italic'
+                            textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                                fontWeight: 'bolder',
+                                fontSize: 20,
+                                color: '#fff',
+                                shadowColor : '#fff', //默认透明
+                                shadowBlur: 10
+                            }
                         },
                         detail : {
                             // 其余属性默认使用全局文本样式，详见TEXTSTYLE
@@ -86,8 +117,8 @@
                                 return ('00' + value[0]).slice(-4)
                                     + '.' + (value[1] + '00').slice(0, 2) + ' Mbps';
                             },
-                            offsetCenter: [550, '0%'],
-                            fontSize:80,
+                            offsetCenter: [600, '0%'],
+                            fontSize:100,
                             borderRadius: 3,
                             shadowBlur: 3,
                             shadowOffsetX: 0,
@@ -100,10 +131,10 @@
                             textShadowOffsetY: 0,
                             fontFamily: 'Arial',
                             width: 290,
-                            color: '#eee',
+                            color: '#fff',
                             rich: {}
                         },
-                        data:[{value: 0, name: 'DL:Mbps'}]
+                        data:[{value: 0, name: '5G-DL:Mbps'}]
                     }
                     
                 ]
@@ -116,7 +147,10 @@
             option2 = null;
             option2 = {
                 title: {
-                    text: '下行速率统计'
+                    text: '下行速率统计',
+                    textStyle:{
+                        color:'#fff'
+                    }
                 },
                 tooltip: {
                     trigger: 'axis',
@@ -134,6 +168,11 @@
                     boundaryGap: true,  // true:x轴两边留白；false:x轴两边无padding
                     splitLine: {
                         show: false
+                    },
+                    axisLine:{
+                        lineStyle:{
+                            color:'#ffffff'
+                        }
                     }
                 },
                 yAxis: {
@@ -142,6 +181,11 @@
                     max:2400,
                     splitLine: {
                         show: false
+                    },
+                    axisLine:{
+                        lineStyle:{
+                            color:'#ffffff'
+                        }
                     }
                 },
                 series: [{
@@ -150,6 +194,9 @@
                     showSymbol: false,
                     hoverAnimation: false,
                     smooth: true,
+                    lineStyle:{
+                        color:'#fff'
+                    },
                     data: data
                 }]
             };
@@ -177,7 +224,7 @@
             }
 
             setInterval(function (){
-                var val = Math.floor(Math.random() * (1700 - 1400)) + 1400;
+                var val = Math.floor(Math.random() * (1520.88 - 1520.88)) + 1520.88;
                 option.series[0].data[0].value = val;
 
                 
