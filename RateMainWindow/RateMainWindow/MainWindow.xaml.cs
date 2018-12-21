@@ -247,6 +247,15 @@ namespace RateMainWindow
         {
             this.Rate_Address.Height = e.NewSize.Height;
             this.Rate_Address.Width = e.NewSize.Width;
+            try
+            {
+                this.Rate_Address.Reload();
+            }
+            catch
+            {
+
+            }
+            
         }
     }
 }

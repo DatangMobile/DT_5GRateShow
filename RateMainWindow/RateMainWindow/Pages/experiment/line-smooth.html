@@ -117,8 +117,8 @@
                                 return ('00' + value[0]).slice(-4)
                                     + '.' + (value[1] + '00').slice(0, 2) + ' Mbps';
                             },
-                            offsetCenter: [600, '0%'],
-                            fontSize:100,
+                            offsetCenter: ['260%', '0%'],   // 1920分辨率，260%合适
+                            fontSize:90,
                             borderRadius: 3,
                             shadowBlur: 3,
                             shadowOffsetX: 0,
@@ -224,7 +224,7 @@
             }
 
             setInterval(function (){
-                var val = Math.floor(Math.random() * (1520.88 - 1520.88)) + 1520.88;
+                var val = Math.floor(Math.random() * (1697.89 - 1421.18)) + 1421.18;
                 option.series[0].data[0].value = val;
 
                 
