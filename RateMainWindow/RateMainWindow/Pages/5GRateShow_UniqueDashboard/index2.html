@@ -19,11 +19,11 @@
                 -webkit-background-size: cover;
                 -o-background-size: cover;
                 background-position: center 0;
-                background: url('img/bg3.jpg')
+                background: url('img/bg3.jpg');
             }
        </style>
-       <div id="container" style="height: 70%; width: 120%; margin-left: -25%; margin-top: 30px"></div>
-       <div id="container2" style="height: 30%; margin-left: 3%; margin-top: -30px;"></div>
+       <div id="container" style="height: 70%; width: 120%; margin-left: -27%; margin-top: 30px"></div>
+       <div id="container2" style="height: 30%; margin-left: 3%; margin-top: -50px;"></div>
 
 
        <script type="text/javascript" src="echarts/echarts.min.js"></script>
@@ -37,7 +37,7 @@
 
        <script type="text/javascript">
        
-       var dom = document.getElementById("container");
+            var dom = document.getElementById("container");
             var myDash = echarts.init(dom);
             var app = {};
             option = null;
@@ -177,8 +177,7 @@
                 },
                 yAxis: {
                     type: 'value',
-                    boundaryGap: [0, '100%'],
-                    max:2400,
+                    boundaryGap: [0, '20%'],
                     splitLine: {
                         show: false
                     },
@@ -188,6 +187,35 @@
                         }
                     }
                 },
+                // 缩放组件
+                dataZoom: [{
+                        type: 'slider',
+                        show: true,
+                        xAxisIndex: [0],
+                        start: 80,
+                        end: 100
+                    },
+                    {
+                        type: 'slider',
+                        show: false,
+                        yAxisIndex: [0],
+                        left: '93%',
+                        start: 0,
+                        end: 100
+                    },
+                    {
+                        type: 'inside',
+                        xAxisIndex: [0],
+                        start: 0,
+                        end: 100
+                    },
+                    {
+                        type: 'inside',
+                        yAxisIndex: [0],
+                        start: 0,
+                        end: 100
+                    }
+                ],
                 series: [{
                     name: '下行速率',
                     type: 'line',

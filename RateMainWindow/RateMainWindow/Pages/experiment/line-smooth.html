@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html style="height: 100%">
-   <head>
-       <meta charset="utf-8">
-   </head>
-   <body style="height: 100%; margin: 0;" id='web_bg'>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body style="height: 100%; margin: 0;" id='web_bg'>
        <style>
            #web_bg{
                 position:fixed;
@@ -15,28 +15,34 @@
                 z-index:-10;
                 zoom: 1;
                 background-repeat: no-repeat;
-                background-size: cover;
+                background-size:cover;
                 -webkit-background-size: cover;
                 -o-background-size: cover;
                 background-position: center 0;
-                background: url('img/bg3.jpg')
+                background: url('img/bg3.jpg');
+                /*
+                filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";  
+                -moz-background-size:120% 135%;  
+                background-size:120% 135%;
+                */
             }
        </style>
-       <div id="container" style="height: 70%; width: 120%; margin-left: -25%;"></div>
-       <div id="container2" style="height: 30%; margin-left: 3%"></div>
+        <div id="container" style="height: 70%; width: 120%; margin-left: -25%; margin-top: 40px;"></div>
+        <div id="container2" style="height: 30%; margin-left: 3%; margin-top: -40px;"></div>
 
 
-       <script type="text/javascript" src="echarts/echarts.min.js"></script>
-       <script type="text/javascript" src="echarts/echarts-gl.min.js"></script>
-       <script type="text/javascript" src="echarts/ecStat.min.js"></script>
-       <script type="text/javascript" src="echarts/dataTool.min.js"></script>
-       <script type="text/javascript" src="echarts/china.js"></script>
-       <script type="text/javascript" src="echarts/world.js"></script>
-       <script type="text/javascript" src="echarts/bmap.min.js"></script>
-       <script type="text/javascript" src="echarts/simplex.js"></script>
+        <script type="text/javascript" src="echarts/echarts.min.js"></script>
+        <script type="text/javascript" src="echarts/echarts-gl.min.js"></script>
+        <script type="text/javascript" src="echarts/ecStat.min.js"></script>
+        <script type="text/javascript" src="echarts/dataTool.min.js"></script>
+        <script type="text/javascript" src="echarts/china.js"></script>
+        <script type="text/javascript" src="echarts/world.js"></script>
+        <script type="text/javascript" src="echarts/bmap.min.js"></script>
+        <script type="text/javascript" src="echarts/simplex.js"></script>
 
-       <script type="text/javascript">
+        <script type="text/javascript">
        
+            // 仪表板
             var dom = document.getElementById("container");
             var myDash = echarts.init(dom);
             var app = {};
@@ -193,6 +199,11 @@
                         type: 'slider',
                         show: true,
                         xAxisIndex: [0],
+                        dataBackground: {
+                            areaStyle:{
+                                color:'#ff0000'
+                            }
+                        },
                         start: 80,
                         end: 100
                     },
@@ -232,7 +243,7 @@
 
             function SetRateDataToChart(rateval) {
                 now = new Date();
-                var a = now.toString();
+                var NowTimeString = now.toString();
 
                 return {
                     name: now.toString(),
@@ -245,22 +256,19 @@
 
             var data = [];
             let now = new Date();
-            var oneDay = 24 * 3600 * 1000;
-            var value = Math.random() * 1000;
 
+            // 坐标轴总共能够容纳7200个点
             for (var i = 0; i < 7200; i++) {
                 data.push(SetRateDataToChart());
             }
 
             setInterval(function (){
-                var val = Math.floor(Math.random() * (1697.89 - 1421.18)) + 1421.18;
+                var val = Math.floor(Math.random() * (169772 - 152111)) + 152112;
+                val = val / 100
                 option.series[0].data[0].value = val;
 
-                
                 data.shift();
                 data.push(SetRateDataToChart(val));
-                
-
                 var ret = SetRateDataToChart(val);
                 myDash.setOption(option,true);
                 myChart.setOption({
@@ -276,6 +284,6 @@
                 myChart.setOption(option2, true);
             }
             
-       </script>
-   </body>
+        </script>
+    </body>
 </html>

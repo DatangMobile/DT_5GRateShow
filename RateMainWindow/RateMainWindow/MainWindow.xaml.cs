@@ -182,32 +182,40 @@ namespace RateMainWindow
             double dl = (adapter.DownloadSpeedKbps / 1024 * Coef * 8);
             double ul = (adapter.UploadSpeedKbps / 1024 * Coef * 8);
 
-            // 表明有业务正在运行;
-            if(dl > 2f)
+            if(CoefSave != 1)
             {
-                if(Coef < CoefSave)
+                // 表明有业务正在运行;
+                if (dl > 2f)
                 {
-                    Coef += Cliff;
-                }
-                if (dl > 1700f)
-                {
-                    dl = 1700f;
-                    dl -= (new Random()).NextDouble();
-                    dl -= (new Random()).Next(1, 5);
-                }
+                    if (Coef < CoefSave)
+                    {
+                        Coef += Cliff;
+                    }
+                    if (dl > 1700f)
+                    {
+                        dl = 1700f;
+                        dl -= (new Random()).NextDouble();
+                        dl -= (new Random()).Next(1, 5);
+                    }
 
-                // 如果低于1.4G速率,可以显示出波段;
-                else if (dl < 1400f)
+                    // 如果低于1.4G速率,可以显示出波段;
+                    else if (dl < 1400f)
+                    {
+                        dl = 1400f;
+                        dl += (new Random()).NextDouble();
+                        dl += (new Random()).Next(1, 20);
+                    }
+                }
+                // 表明没有业务;
+                else if (dl < 2f)
                 {
-                    dl = 1400f;
-                    dl += (new Random()).NextDouble();
-                    dl += (new Random()).Next(1, 20);
+                    Coef = 1;
+
                 }
             }
-            // 表明没有业务;
-            else if(dl < 2f)
+            else if(CoefSave == 1)
             {
-                Coef = 1;
+
             }
             
             
