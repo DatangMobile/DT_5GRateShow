@@ -11,10 +11,24 @@ namespace RateMainWindow.Model
     /// </summary>
     class RateJSModel
     {
+        /// <summary>
+        /// 下载速率;
+        /// </summary>
         public string DownLoadRate { get; set; }
+
+        /// <summary>
+        /// 上传速率;
+        /// </summary>
         public string UpLoadRate { get; set; }
 
+        /// <summary>
+        /// 显示速率字符大小;
+        /// </summary>
         public string DetailRateFontSize { get; set; }
+        
+        /// <summary>
+        /// 显示速率字符的偏移量;
+        /// </summary>
         public string DetailRateOffset { get; set; }
     }
 }
