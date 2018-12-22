@@ -188,6 +188,7 @@
                     splitLine: {
                         show: false
                     },
+                    max: 2400,
                     axisLine:{
                         lineStyle:{
                             color:'#ffffff'
@@ -204,7 +205,7 @@
                                 color:'#ff0000'
                             }
                         },
-                        start: 80,
+                        start: 60,
                         end: 100
                     },
                     {
@@ -241,14 +242,30 @@
                 }]
             };
 
+            function checkTime(i)
+            {
+                if (i < 10) 
+                {
+                    i = "0" + i;
+                }
+                return i;
+            }
+
             function SetRateDataToChart(rateval) {
                 now = new Date();
                 var NowTimeString = now.toString();
 
+                var prtVal = {value: [
+                        [now.getHours(), checkTime(now.getMinutes()), checkTime(now.getSeconds())].join(':'),
+                        rateval
+                    ]};
+
+                //console.log(prtVal);
+
                 return {
                     name: now.toString(),
                     value: [
-                        [now.getHours(), now.getMinutes(), now.getSeconds()].join(':'),
+                        [now.getHours(), checkTime(now.getMinutes()), checkTime(now.getSeconds())].join(':'),
                         rateval
                     ]
                 }
@@ -256,6 +273,8 @@
 
             var data = [];
             let now = new Date();
+            var ycount = 0;
+            var zoompres = 50;
 
             // 坐标轴总共能够容纳7200个点
             for (var i = 0; i < 7200; i++) {
@@ -263,17 +282,35 @@
             }
 
             setInterval(function (){
+                // 产生随机数
                 var val = Math.floor(Math.random() * (169772 - 152111)) + 152112;
-                val = val / 100
-                option.series[0].data[0].value = val;
+                val = val / 100;
+                ycount ++;
+                var count = data.length;
+                
+                
+                if(ycount % (count / 100) == 0)
+                {
+                    zoompres++;
+                    if(zoompres > 80)
+                    {
+                        zoompres = 80;
+                    }
+                }
+                
+                option.series[0].data[0].value = val;      // 在仪表板上显示
 
-                data.shift();
-                data.push(SetRateDataToChart(val));
+                data.shift();                              // 删除前一个元素
+                data.push(SetRateDataToChart(val));        // 插入新元素
                 var ret = SetRateDataToChart(val);
+                
                 myDash.setOption(option,true);
                 myChart.setOption({
                     series: [{
                         data: data
+                    }],
+                    dataZoom:[{
+                        start: zoompres
                     }]
                 });
             },1000);;

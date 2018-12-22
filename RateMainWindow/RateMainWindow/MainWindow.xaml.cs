@@ -189,7 +189,12 @@ namespace RateMainWindow
                 {
                     if (Coef < CoefSave)
                     {
+                        Cliff += 2;
                         Coef += Cliff;
+                        if(Coef > CoefSave)
+                        {
+                            Coef = CoefSave;
+                        }
                     }
                     if (dl > 1700f)
                     {
@@ -197,13 +202,19 @@ namespace RateMainWindow
                         dl -= (new Random()).NextDouble();
                         dl -= (new Random()).Next(1, 5);
                     }
-
                     // 如果低于1.4G速率,可以显示出波段;
                     else if (dl < 1400f)
                     {
-                        dl = 1400f;
-                        dl += (new Random()).NextDouble();
-                        dl += (new Random()).Next(1, 20);
+                        // 如果正在爬升中，则显示真实优化的速率;
+                        if(Coef < CoefSave)
+                        {
+                        }
+                        else
+                        {
+                            dl = 1400f;
+                            dl += (new Random()).NextDouble();
+                            dl += (new Random()).Next(1, 20);
+                        }
                     }
                 }
                 // 表明没有业务;
@@ -215,7 +226,7 @@ namespace RateMainWindow
             }
             else if(CoefSave == 1)
             {
-
+                // 特殊处理,倍率是1的时候，显示真实数据;
             }
             
             
