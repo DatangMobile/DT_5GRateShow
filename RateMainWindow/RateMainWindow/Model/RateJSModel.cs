@@ -13,5 +13,8 @@ namespace RateMainWindow.Model
     {
         public string DownLoadRate { get; set; }
         public string UpLoadRate { get; set; }
+
+        public string DetailRateFontSize { get; set; }
+        public string DetailRateOffset { get; set; }
     }
 }

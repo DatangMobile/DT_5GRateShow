@@ -26,15 +26,15 @@
        <div id="container2" style="height: 30%; margin-left: 3%"></div>
 
 
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
-       <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+       <script type="text/javascript" src="echarts/echarts.min.js"></script>
+       <script type="text/javascript" src="echarts/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="echarts/ecStat.min.js"></script>
+       <script type="text/javascript" src="echarts/dataTool.min.js"></script>
+       <script type="text/javascript" src="echarts/china.js"></script>
+       <script type="text/javascript" src="echarts/world.js"></script>
+       <script type="text/javascript" src="echarts/bmap.min.js"></script>
+       <script type="text/javascript" src="echarts/simplex.js"></script>
+
        <script type="text/javascript">
        
             var dom = document.getElementById("container");
@@ -117,7 +117,7 @@
                                 return ('00' + value[0]).slice(-4)
                                     + '.' + (value[1] + '00').slice(0, 2) + ' Mbps';
                             },
-                            offsetCenter: ['260%', '0%'],   // 1920分辨率，260%合适
+                            offsetCenter: ['290%', '0%'],   // 1920分辨率，260%合适
                             fontSize:90,
                             borderRadius: 3,
                             shadowBlur: 3,
@@ -160,7 +160,8 @@
                         return date.getHours() + ':' + (date.getMinutes()) + ':' + date.getSeconds();
                     },
                     axisPointer: {
-                        animation: false
+                        animation: false,
+                        type: 'cross'
                     }
                 },
                 xAxis: {
@@ -177,8 +178,7 @@
                 },
                 yAxis: {
                     type: 'value',
-                    boundaryGap: [0, '100%'],
-                    max:2400,
+                    boundaryGap: [0, '20%'],
                     splitLine: {
                         show: false
                     },
@@ -188,6 +188,35 @@
                         }
                     }
                 },
+                // 缩放组件
+                dataZoom: [{
+                        type: 'slider',
+                        show: true,
+                        xAxisIndex: [0],
+                        start: 80,
+                        end: 100
+                    },
+                    {
+                        type: 'slider',
+                        show: false,
+                        yAxisIndex: [0],
+                        left: '93%',
+                        start: 0,
+                        end: 100
+                    },
+                    {
+                        type: 'inside',
+                        xAxisIndex: [0],
+                        start: 0,
+                        end: 100
+                    },
+                    {
+                        type: 'inside',
+                        yAxisIndex: [0],
+                        start: 0,
+                        end: 100
+                    }
+                ],
                 series: [{
                     name: '下行速率',
                     type: 'line',
