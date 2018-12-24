@@ -26,9 +26,18 @@
                 background-size:120% 135%;
                 */
             }
+            #container{
+                /*margin-right: 20px;*/
+            }
        </style>
-        <div id="container" style="height: 70%; width: 120%; margin-left: -25%; margin-top: 40px;"></div>
-        <div id="container2" style="height: 30%; margin-left: 3%; margin-top: -40px;"></div>
+        <!--<div id="container2" style="width: 50%; background: url('img/1.jpg'); float: left;"></div>-->
+        <div id="ShowImg" style="width: 50%; height: 100%; float:left; z-index: 1">
+            <div style="height: 30%; margin: 0 auto; margin-top: 25%;">
+                <img src="img/1.jpg" style="width: 80%; margin: 0 auto; display: flex; justify-content: center; align-content: center;"/>
+            </div>
+        </div>
+        <div id="container" style="width: 50%; height: 100%; float: right; margin-top: -3%; z-index: 2;"></div>
+        
 
 
         <script type="text/javascript" src="echarts/echarts.min.js"></script>
@@ -66,7 +75,7 @@
                         min: 0,
                         max: 2200,
                         splitNumber: 10,
-                        radius: '65%',
+                        radius: '55%',
                         startAngle: 270,
                         endAngle: 0,
                         itemStyle:{
@@ -123,7 +132,7 @@
                                 return ('00' + value[0]).slice(-4)
                                     + '.' + (value[1] + '00').slice(0, 2) + ' Mbps';
                             },
-                            offsetCenter: ['290%', '0%'],   // 1920分辨率，260%合适
+                            offsetCenter: ['0%', '145%'],   // 1920分辨率，260%合适
                             fontSize:90,
                             borderRadius: 3,
                             shadowBlur: 3,
@@ -146,101 +155,7 @@
                 ]
             };
 
-            var dom2 = document.getElementById("container2");
-            var myChart = echarts.init(dom2);
-            var app2 = {};
-
-            option2 = null;
-            option2 = {
-                title: {
-                    text: '下行速率统计',
-                    textStyle:{
-                        color:'#fff'
-                    }
-                },
-                tooltip: {
-                    trigger: 'axis',
-                    formatter: function (params) {
-                        params = params[0];
-                        var date = new Date(params.name);
-                        return date.getHours() + ':' + (date.getMinutes()) + ':' + date.getSeconds();
-                    },
-                    axisPointer: {
-                        animation: false,
-                        type: 'cross'
-                    }
-                },
-                xAxis: {
-                    type: 'category',
-                    boundaryGap: true,  // true:x轴两边留白；false:x轴两边无padding
-                    splitLine: {
-                        show: false
-                    },
-                    axisLine:{
-                        lineStyle:{
-                            color:'#ffffff'
-                        }
-                    }
-                },
-                yAxis: {
-                    type: 'value',
-                    boundaryGap: [0, '20%'],
-                    splitLine: {
-                        show: false
-                    },
-                    max: 2400,
-                    axisLine:{
-                        lineStyle:{
-                            color:'#ffffff'
-                        }
-                    }
-                },
-                // 缩放组件
-                dataZoom: [{
-                        type: 'slider',
-                        show: true,
-                        xAxisIndex: [0],
-                        dataBackground: {
-                            areaStyle:{
-                                color:'#ff0000'
-                            }
-                        },
-                        start: 60,
-                        end: 100
-                    },
-                    {
-                        type: 'slider',
-                        show: false,
-                        yAxisIndex: [0],
-                        left: '93%',
-                        start: 0,
-                        end: 100
-                    },
-                    {
-                        type: 'inside',
-                        xAxisIndex: [0],
-                        start: 0,
-                        end: 100
-                    },
-                    {
-                        type: 'inside',
-                        yAxisIndex: [0],
-                        start: 0,
-                        end: 100
-                    }
-                ],
-                series: [{
-                    name: '下行速率',
-                    type: 'line',
-                    showSymbol: false,
-                    hoverAnimation: false,
-                    smooth: true,
-                    lineStyle:{
-                        color:'#fff'
-                    },
-                    data: data
-                }]
-            };
+            
 
             function checkTime(i)
             {
@@ -305,17 +220,10 @@
                 var ret = SetRateDataToChart(val);
                 
                 myDash.setOption(option,true);
-                myChart.setOption({
-                    series: [{
-                        data: data
-                    }]
-                });
+
             },1000);;
             if (option && typeof option === "object") {
                 myDash.setOption(option, true);
-            }
-            if (option2 && typeof option2 === "object") {
-                myChart.setOption(option2, true);
             }
             
         </script>
