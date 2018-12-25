@@ -1,4 +1,4 @@
-<!-- 单色仪表盘和拓扑图 -->
+<!-- 仪表盘多种颜色 -->
 <!DOCTYPE html>
 <html style="height: 100%">
    <head>
@@ -6,39 +6,41 @@
    </head>
    <body style="height: 100%; margin: 0;" id='web_bg'>
     <style>
+
         #web_bg{
-             position:fixed;
-             top: 0;
-             left: 0;
-             width:100%;
-             height:100%;
-             min-width: 1000px;
-             z-index:-10;
-             zoom: 1;
-             background-repeat: no-repeat;
-             background-size:cover;
-             -webkit-background-size: cover;
-             -o-background-size: cover;
-             background-position: center 0;
-             background: url('img/bg3.jpg');
-             /*
-             filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";  
-             -moz-background-size:120% 135%;  
-             background-size:120% 135%;
-             */
-         }
-         #container{
-             /*margin-right: 20px;*/
-         }
+                position:fixed;
+                top: 0;
+                left: 0;
+                width:100%;
+                height:100%;
+                min-width: 1000px;
+                z-index:-10;
+                zoom: 1;
+                background-repeat: no-repeat;
+                background-size:cover;
+                -webkit-background-size: cover;
+                -o-background-size: cover;
+                background-position: center 0;
+                background: url('img/bg3_2.jpg');
+                /*
+                filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";  
+                -moz-background-size:120% 135%;  
+                background-size:120% 135%;
+                */
+            }
+        #container{
+            /*margin-right: 20px;*/
+        }
+            
     </style>
     <div style="height: 100%; margin-right: 120px;">
-        <div id="ShowImg" style="width: 60%; height: 100%; float:left; z-index: 1">
-            <div style="height: 30%; margin: 0 auto; margin-top: 25%;">
-                <img src="img/TP1.png" style="width: 70%; margin: 0 auto; display: flex; justify-content: center; align-content: center;"/>
-            </div>
-        </div>
-        <div id="container" style="width: 40%; height: 100%; float: right; margin-top: -3%; z-index: 2;"></div>
-    
+         <div id="ShowImg" style="width: 50%; height: 100%; float:left; z-index: 1">
+             <div style="height: 30%; margin: 0 auto; margin-top: 35%;">
+                 <img src="img/TP1.png" style="width: 70%; margin: 0 auto; display: flex; justify-content: center; align-content: center;"/>
+             </div>
+         </div>
+         <div id="container" style="width: 50%; height: 100%; float: right; margin-top: -7%; z-index: 2;"></div>
+     
     </div>
      <!--<div id="container2" style="width: 50%; background: url('img/1.jpg'); float: left;"></div>-->
      
@@ -79,7 +81,7 @@
                     min: 0,
                     max: 2200,
                     splitNumber: 10,
-                    radius: '65%',
+                    radius: '66%',
                     startAngle: 270,
                     endAngle: 0,
                     itemStyle:{
@@ -89,8 +91,7 @@
                     axisLine: {            // 坐标轴线
                         lineStyle: {       // 属性lineStyle控制线条样式
                             width: 60,
-                            color: [[0.0, '#ffffff'], [0.0, '#ffffff'], [1, '#ffffff']],
-                            opacity : 0.3,
+                            opacity : 0.5,
                             shadowColor:'#ff00ff'
                         }
                     },
