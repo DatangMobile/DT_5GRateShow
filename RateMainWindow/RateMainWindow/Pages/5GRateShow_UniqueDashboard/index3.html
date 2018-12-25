@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+   <head>
+       <meta charset="utf-8">
+   </head>
+   <body style="height: 100%; margin: 0;" id='web_bg'>
+    <style>
+        #web_bg{
+             position:fixed;
+             top: 0;
+             left: 0;
+             width:100%;
+             height:100%;
+             min-width: 1000px;
+             z-index:-10;
+             zoom: 1;
+             background-repeat: no-repeat;
+             background-size:cover;
+             -webkit-background-size: cover;
+             -o-background-size: cover;
+             background-position: center 0;
+             background: url('img/bg3.jpg');
+             /*
+             filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";  
+             -moz-background-size:120% 135%;  
+             background-size:120% 135%;
+             */
+         }
+         #container{
+             /*margin-right: 20px;*/
+         }
+    </style>
+    <div style="height: 100%;">
+         <div id="ShowImg" style="width: 60%; height: 100%; float:left; z-index: 1">
+             <div style="height: 30%; margin: 0 auto; margin-top: 20%;">
+                 <img src="img/TP1.png" style="width: 80%; margin: 0 auto; display: flex; justify-content: center; align-content: center;"/>
+             </div>
+         </div>
+         <div id="container" style="width: 40%; height: 100%; float: right; margin-top: -3%; z-index: 2;"></div>
+     
+    </div>
+     <!--<div id="container2" style="width: 50%; background: url('img/1.jpg'); float: left;"></div>-->
+     
+
+
+     <script type="text/javascript" src="echarts/echarts.min.js"></script>
+     <script type="text/javascript" src="echarts/echarts-gl.min.js"></script>
+     <script type="text/javascript" src="echarts/ecStat.min.js"></script>
+     <script type="text/javascript" src="echarts/dataTool.min.js"></script>
+     <script type="text/javascript" src="echarts/china.js"></script>
+     <script type="text/javascript" src="echarts/world.js"></script>
+     <script type="text/javascript" src="echarts/bmap.min.js"></script>
+     <script type="text/javascript" src="echarts/simplex.js"></script>
+
+     <script type="text/javascript">
+    
+        // 仪表板
+        var dom = document.getElementById("container");
+        var myDash = echarts.init(dom);
+        var app = {};
+        option = null;
+        option = {
+            tooltip : {
+                formatter: "{a} <br/>{c} {b}"
+            },
+            toolbox: {
+                show: false,
+                feature: {
+                    restore: {show: false},
+                    saveAsImage: {show: false}
+                }
+            },
+            series : [
+                {
+                    name: '下行速率',
+                    type: 'gauge',
+                    z: 3,
+                    min: 0,
+                    max: 2200,
+                    splitNumber: 10,
+                    radius: '65%',
+                    startAngle: 270,
+                    endAngle: 0,
+                    itemStyle:{
+                        opacity : 0.6,
+                        color:'#ff0000'
+                    },
+                    axisLine: {            // 坐标轴线
+                        lineStyle: {       // 属性lineStyle控制线条样式
+                            width: 60,
+                            color: [[0.0, '#ffffff'], [0.0, '#ffffff'], [1, '#ffffff']],
+                            opacity : 0.3,
+                            shadowColor:'#ff00ff'
+                        }
+                    },
+                    axisTick: {              // 坐标轴小标记
+                        length: 4,           // 属性length控制线长
+                        lineStyle: {         // 属性lineStyle控制线条样式
+                            color: 'auto'
+                        }
+                    },
+                    splitLine: {             // 分隔线
+                        length: 8,          // 属性length控制线长
+                        lineStyle: {         // 属性lineStyle（详见lineStyle）控制线条样式
+                            color: 'auto'
+                        }
+                    },
+                    axisLabel: {
+                        borderRadius: 500,
+                        color: '#fff',
+                        padding: 1,
+                        textShadowBlur: 1,
+                        textShadowOffsetX: 0,
+                        textShadowOffsetY: 0,
+                        textShadowColor: '#000',
+                        fontSize:20
+                    },
+                    title : {
+                        // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                        fontWeight: 'bolder',
+                        fontSize: 20,
+                        textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                            fontWeight: 'bolder',
+                            fontSize: 20,
+                            color: '#fff',
+                            shadowColor : '#fff', //默认透明
+                            shadowBlur: 10
+                        }
+                    },
+                    detail : {
+                        // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                        formatter: function (value) {
+                            value = (value + '').split('.');
+                            value.length < 2 && (value.push('00'));
+                            return ('00' + value[0]).slice(-4)
+                                + '.' + (value[1] + '00').slice(0, 2) + ' Mbps';
+                        },
+                        offsetCenter: ['0%', '145%'],   // 1920分辨率，260%合适
+                        fontSize:90,
+                        borderRadius: 3,
+                        shadowBlur: 3,
+                        shadowOffsetX: 0,
+                        shadowOffsetY: 3,
+                        textBorderColor: '#000',
+                        textBorderWidth: 2,
+                        textShadowBlur: 2,
+                        textShadowColor: '#fff',
+                        textShadowOffsetX: 0,
+                        textShadowOffsetY: 0,
+                        fontFamily: 'Arial',
+                        width: 290,
+                        color: '#fff',
+                        rich: {}
+                    },
+                    data:[{value: 0, name: '5G-DL:Mbps'}]
+                }
+                
+            ]
+        };
+
+        function SetRateDataToChart(rateval) {
+            now = new Date();
+            var a = now.toString();
+
+            return {
+                name: now.toString(),
+                value: [
+                    [now.getHours(), now.getMinutes(), now.getSeconds()].join(':'),
+                    rateval
+                ]
+            }
+        }
+
+        var data = [];
+        let now = new Date();
+        var oneDay = 24 * 3600 * 1000;
+        var value = Math.random() * 1000;
+
+        // 设置最多存多少个点
+        for (var i = 0; i < 7200; i++) {
+            data.push(SetRateDataToChart());
+        }
+
+        setInterval(function (){
+            var Obj = JSON.parse(JsObj.m_TransmitionData);
+            var Rate = Obj.DownLoadRate;
+
+            option.series[0].data[0].value = Rate;
+            data.shift();
+            data.push(SetRateDataToChart(Rate));
+            var ret = SetRateDataToChart(Rate);
+            myDash.setOption(option,true);
+        },1000);;
+        if (option && typeof option === "object") {
+            myDash.setOption(option, true);
+        }
+            
+       </script>
+   </body>
+</html>
