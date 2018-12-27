@@ -20,7 +20,7 @@
                 -webkit-background-size: cover;
                 -o-background-size: cover;
                 background-position: center 0;
-                background: url('img/bg3.jpg');
+                background: url('img/bg3_2.jpg');
                 /*
                 filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";  
                 -moz-background-size:120% 135%;  
@@ -54,7 +54,7 @@
                 </div>
                 <!--测速按钮-->
                 <div style="height: 30%; margin-top: -20%;">
-                    <button onclick="SetTestStatus()" class="RateShowButton"
+                    <button onclick="SetTestStatus()" class="RateShowButton" id="TestButton"
                             style="margin: 0 auto; display: flex; justify-content: center; align-content: center;">
                             开始测速
                     </button>
@@ -181,23 +181,26 @@
 
             function SetTestStatus()
             {
+                var c_btn = document.getElementById("TestButton");
                 if(StartTesting == false)
                 {
                     HeighestValShow = 0;
                     HeighestVal = 0;
                     StartTesting = true;
+                    c_btn.innerHTML = "停止测速";
                 }
                 else if(StartTesting == true)
                 {
                     StartTesting = false;
                     HeighestValShow = HeighestVal;
+                    c_btn.innerHTML = "开始测速";
                 }
             }
 
             setInterval(function (){
                 var c_st = document.getElementById("speedtext");
                 var Obj = JSON.parse(JsObj.m_TransmitionData);
-                ShowVal = Obj.DownLoadRate;
+                ShowVal = parseInt(Obj.DownLoadRate).toFixed(2);
 
                 if(ShowVal > HeighestVal)
                     HeighestVal = ShowVal;
