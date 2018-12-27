@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body style="height: 100%; margin: 0;" id='web_bg'>
+        <style>
+            #web_bg{
+                position:fixed;
+                top: 0;
+                left: 0;
+                width:100%;
+                height:100%;
+                min-width: 1000px;
+                z-index:-10;
+                zoom: 1;
+                background-repeat: no-repeat;
+                background-size:cover;
+                -webkit-background-size: cover;
+                -o-background-size: cover;
+                background-position: center 0;
+                background: url('img/bg3.jpg');
+                /*
+                filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";  
+                -moz-background-size:120% 135%;  
+                background-size:120% 135%;
+                */
+            }
+            #speedtext{
+                margin: 0 auto; 
+                display: flex; 
+                justify-content: center; 
+                align-content: center;
+                color: aliceblue;
+                font-size: 50px;
+            }
+            .RateShowButton{
+                background: #3498db;
+                width: 200px;
+                font-size: 40px;
+                border-radius: 3px;
+                color: aliceblue;
+            }
+        </style>
+        <div style="height: 100%; margin-right: 120px;">
+           <!-- 左侧显示的拓扑图 -->
+            <div style="width: 50%; height: 100%; float:left; z-index: 1; margin-top: 15%;">
+                <!--拓扑图-->
+                <div id="ShowImg" style="height: 70%;">
+                    <div style="margin: 0 auto;">
+                        <img src="img/TP1.png" style="width: 80%; margin: 0 auto; display: flex; justify-content: center; align-content: center;"/>
+                    </div>
+                </div>
+                <!--测速按钮-->
+                <div style="height: 30%; margin-top: -20%;">
+                    <button onclick="SetTestStatus()" class="RateShowButton"
+                            style="margin: 0 auto; display: flex; justify-content: center; align-content: center;">
+                            开始测速
+                    </button>
+                </div>
+            </div>
+                <!-- 右侧显示的表盘和速率 -->
+            <div style="width: 50%; height: 100%; float: right; z-index: 2;">
+                <!--表盘-->
+                <div id="container" style="height: 80%;"></div>
+                <!--速度显示-->
+                <div  style="height: 20%;">
+                    <p id="speedtext"></p>
+                </div>
+            </div>
+            
+       </div>
+        
+        <script type="text/javascript" src="echarts/echarts.min.js"></script>
+        <script type="text/javascript" src="echarts/echarts-gl.min.js"></script>
+        <script type="text/javascript" src="echarts/ecStat.min.js"></script>
+        <script type="text/javascript" src="echarts/dataTool.min.js"></script>
+        <script type="text/javascript" src="echarts/china.js"></script>
+        <script type="text/javascript" src="echarts/world.js"></script>
+        <script type="text/javascript" src="echarts/bmap.min.js"></script>
+        <script type="text/javascript" src="echarts/simplex.js"></script>
+
+        <script type="text/javascript">
+       
+            // 仪表板
+            var dom = document.getElementById("container");
+            var myDash = echarts.init(dom);
+            var StartTesting = false;
+            let now = new Date();
+            var ShowVal = 0;
+            var HeighestVal = 0;
+            var HeighestValShow;
+
+            // echarts数据
+            option = null;
+            option = {
+                tooltip : {
+                    formatter: "{a} <br/>{c} {b}"
+                },
+                toolbox: {
+                    show: false,
+                    feature: {
+                        restore: {show: false},
+                        saveAsImage: {show: false}
+                    }
+                },
+                series : [
+                    {
+                        name: '下行速率',
+                        type: 'gauge',
+                        z: 3,
+                        min: 0,
+                        max: 2200,
+                        splitNumber: 10,
+                        radius: '70%',
+                        startAngle: 270,
+                        endAngle: 0,
+                        itemStyle:{
+                            opacity : 0.6,
+                            color:'#ff0000'
+                        },
+                        axisLine: {              // 坐标轴线
+                            lineStyle: {         // 属性lineStyle控制线条样式
+                                width: 60,
+                                opacity : 0.5,
+                                shadowColor:'#ff00ff'
+                            }
+                        },
+                        axisTick: {              // 坐标轴小标记
+                            length: 4,           // 属性length控制线长
+                            lineStyle: {         // 属性lineStyle控制线条样式
+                                color: 'auto'
+                            }
+                        },
+                        splitLine: {             // 分隔线
+                            length: 8,           // 属性length控制线长
+                            lineStyle: {         // 属性lineStyle（详见lineStyle）控制线条样式
+                                color: 'auto'
+                            }
+                        },
+                        axisLabel: {
+                            borderRadius: 500,
+                            color: '#fff',
+                            padding: 1,
+                            textShadowBlur: 1,
+                            textShadowOffsetX: 0,
+                            textShadowOffsetY: 0,
+                            textShadowColor: '#000',
+                            fontSize:20
+                        },
+                        title : {
+                            fontWeight: 'bolder',
+                            fontSize: 20,
+                            textStyle: {                // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                                fontWeight: 'bolder',
+                                fontSize: 20,
+                                color: '#fff',
+                                shadowColor : '#fff',   //默认透明
+                                shadowBlur: 10
+                            }
+                        },
+                        detail : {
+                            show: false
+                        },
+                        data:[{value: 0, name: '5G-DL:Mbps'}]
+                    }
+                    
+                ]
+            };
+            
+            // 检查时间，如果时间小于10，调整格式
+            function checkTime(i)
+            {
+                if (i < 10) 
+                {
+                    i = "0" + i;
+                }
+                return i;
+            }
+
+            function SetTestStatus()
+            {
+                if(StartTesting == false)
+                {
+                    HeighestValShow = 0;
+                    HeighestVal = 0;
+                    StartTesting = true;
+                }
+                else if(StartTesting == true)
+                {
+                    StartTesting = false;
+                    HeighestValShow = HeighestVal;
+                }
+            }
+
+            // 周期定时器，更新显示数据，设置随机数到表盘和速度显示
+            setInterval(function (){
+                var c_st = document.getElementById("speedtext");
+                // 产生随机数
+                ShowVal = Math.floor(Math.random() * (169772 - 152111)) + 152112;
+                ShowVal = ShowVal / 100;
+                
+                if(ShowVal > HeighestVal)
+                    HeighestVal = ShowVal;
+            
+                option.series[0].data[0].value = ShowVal;      // 在仪表板上显示
+                if(StartTesting)
+                {
+                    myDash.setOption(option,true);
+                    c_st.innerHTML = "测速中：" + ShowVal + " Mbps";
+                }
+                else if(!StartTesting)
+                {
+                    ShowVal = 0;
+                    option.series[0].data[0].value = ShowVal;
+                    myDash.setOption(option,true);
+                    c_st.innerHTML = "最高下载速率：" + HeighestValShow + " Mbps";
+                }
+                
+            },50);
+
+        </script>
+    </body>
+</html>
