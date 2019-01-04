@@ -196,11 +196,11 @@ namespace RateMainWindow
                             Coef = CoefSave;
                         }
                     }
-                    if (dl > 1700f)
+                    if (dl > 1630f)
                     {
-                        dl = 1700f;
+                        dl = 1630f;
                         dl -= (new Random()).NextDouble();
-                        dl -= (new Random()).Next(1, 5);
+                        dl -= (new Random()).Next(2, 20);
                     }
                     // 如果低于1.4G速率,可以显示出波段;
                     else if (dl < 1400f)
@@ -213,7 +213,7 @@ namespace RateMainWindow
                         {
                             dl = 1400f;
                             dl += (new Random()).NextDouble();
-                            dl += (new Random()).Next(1, 20);
+                            dl += (new Random()).Next(2, 20);
                         }
                     }
                 }

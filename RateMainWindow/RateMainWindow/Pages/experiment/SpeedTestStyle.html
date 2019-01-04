@@ -19,7 +19,7 @@
                 -webkit-background-size: cover;
                 -o-background-size: cover;
                 background-position: center 0;
-                background: url('img/bg3.jpg');
+                background: url('img/bg3_2.jpg');
                 /*
                 filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";  
                 -moz-background-size:120% 135%;  
@@ -36,40 +36,40 @@
             }
             .RateShowButton{
                 background: #3498db;
-                width: 200px;
+                width: 230px;
                 font-size: 40px;
-                border-radius: 3px;
+                border-radius: 30px;
                 color: aliceblue;
             }
         </style>
         <div style="height: 100%; margin-right: 120px;">
-           <!-- 左侧显示的拓扑图 -->
-            <div style="width: 50%; height: 100%; float:left; z-index: 1; margin-top: 15%;">
-                <!--拓扑图-->
-                <div id="ShowImg" style="height: 70%;">
-                    <div style="margin: 0 auto;">
-                        <img src="img/TP1.png" style="width: 80%; margin: 0 auto; display: flex; justify-content: center; align-content: center;"/>
-                    </div>
-                </div>
-                <!--测速按钮-->
-                <div style="height: 30%; margin-top: -20%;">
-                    <button onclick="SetTestStatus()" class="RateShowButton"
-                            style="margin: 0 auto; display: flex; justify-content: center; align-content: center;">
-                            开始测速
-                    </button>
-                </div>
-            </div>
-                <!-- 右侧显示的表盘和速率 -->
-            <div style="width: 50%; height: 100%; float: right; z-index: 2;">
-                <!--表盘-->
-                <div id="container" style="height: 80%;"></div>
-                <!--速度显示-->
-                <div  style="height: 20%;">
-                    <p id="speedtext"></p>
-                </div>
-            </div>
-            
-       </div>
+            <!-- 左侧显示的拓扑图 -->
+             <div style="width: 50%; height: 100%; float:left; z-index: 1; margin-top: 12%;">
+                 <!--拓扑图-->
+                 <div id="ShowImg" style="height: 70%;">
+                     <div style="margin: 0 auto;">
+                         <img src="img/TP1.png" style="width: 80%; margin: 0 auto; display: flex; justify-content: center; align-content: center;"/>
+                     </div>
+                 </div>
+                 <!--测速按钮-->
+                 <div style="height: 30%; margin-top: -20%;">
+                     <button onclick="SetTestStatus()" class="RateShowButton" id="TestButton"
+                             style="margin: 0 auto; display: flex; justify-content: center; align-content: center;">
+                             开始测速
+                     </button>
+                 </div>
+             </div>
+                 <!-- 右侧显示的表盘和速率 -->
+             <div style="width: 50%; height: 100%; float: right; z-index: 2;">
+                 <!--表盘-->
+                 <div id="container" style="height: 80%;"></div>
+                 <!--速度显示-->
+                 <div  style="height: 20%;">
+                     <p id="speedtext"></p>
+                 </div>
+             </div>
+             
+        </div>
         
         <script type="text/javascript" src="echarts/echarts.min.js"></script>
         <script type="text/javascript" src="echarts/echarts-gl.min.js"></script>
@@ -180,16 +180,19 @@
 
             function SetTestStatus()
             {
+                var c_btn = document.getElementById("TestButton");
                 if(StartTesting == false)
                 {
                     HeighestValShow = 0;
                     HeighestVal = 0;
                     StartTesting = true;
-                }
-                else if(StartTesting == true)
-                {
-                    StartTesting = false;
-                    HeighestValShow = HeighestVal;
+                    c_btn.innerHTML = "测速中";
+
+                    setTimeout(() => {
+                        StartTesting = false;
+                        HeighestValShow = HeighestVal;
+                        c_btn.innerHTML = "开始测速";
+                    }, 10000);
                 }
             }
 
@@ -197,7 +200,7 @@
             setInterval(function (){
                 var c_st = document.getElementById("speedtext");
                 // 产生随机数
-                ShowVal = Math.floor(Math.random() * (169772 - 152111)) + 152112;
+                ShowVal = Math.floor(Math.random() * (162772 - 152111)) + 152112;
                 ShowVal = ShowVal / 100;
                 
                 if(ShowVal > HeighestVal)
@@ -217,7 +220,7 @@
                     c_st.innerHTML = "最高下载速率：" + HeighestValShow + " Mbps";
                 }
                 
-            },50);
+            },400);
 
         </script>
     </body>
