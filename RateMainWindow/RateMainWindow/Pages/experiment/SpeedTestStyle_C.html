@@ -95,6 +95,7 @@
 
             var StartTesting = false;    // 是否在测速中
             var Climbing = false;        // 是否在爬升阶段(C方案用)
+            var tempshowval = 0;         // 爬升时的显示速率(C方案用)
 
             var ShowVal = 0;             // 测试周期内的实时速率
             var HeighestVal = 0;         // 测试周期内实时更新的最高速
@@ -196,7 +197,14 @@
                     HeighestValShow = 0;
                     HeighestVal = 0;
                     StartTesting = true;
+                    Climbing = true;
                     c_btn.innerHTML = "测速中";
+
+                    // 设置爬升时间1秒;
+                    setTimeout(()=>{
+                        Climbing = false;
+                        tempshowval = 0;
+                    }, 1000);
 
                     // 设置测速的时间为10秒钟
                     setTimeout(() => {
@@ -212,17 +220,31 @@
                 var c_st = document.getElementById("speedtext");
 
                 // 产生随机数
-                ShowVal = Math.floor(Math.random() * (162772 - 152111)) + 152112;
-                ShowVal = ShowVal / 100;
+                if(Climbing)
+                {
+                    tempval1 = Math.floor(Math.random() * (25016 - 0)) + 0;
+                    
+                    tempshowval += (tempval1 / 100);
+                    ShowVal = tempshowval;
+                }
+                else
+                {
+                    ShowVal = Math.floor(Math.random() * (162772 - 160111)) + 160111;
+                    ShowVal = ShowVal / 100;
+                }
                 
                 if(ShowVal > HeighestVal)
-                    HeighestVal = ShowVal;
-            
+                {
+                    if(ShowVal < 1628)
+                        HeighestVal = ShowVal;
+                }
+                    
+                ShowVal.toFixed(2);
                 option.series[0].data[0].value = ShowVal;      // 在仪表板上显示
                 if(StartTesting)
                 {
                     myDash.setOption(option,true);
-                    c_st.innerHTML = "测速中：" + ShowVal + " Mbps";
+                    c_st.innerHTML = "实时速率：" + ShowVal.toFixed(2) + " Mbps";
                 }
                 else if(!StartTesting)
                 {
@@ -232,7 +254,7 @@
                     c_st.innerHTML = "最高下载速率：" + HeighestValShow + " Mbps";
                 }
                 
-            },400);
+            },100);
 
         </script>
     </body>
